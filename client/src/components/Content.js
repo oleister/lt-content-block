@@ -102,12 +102,26 @@ class Content extends Component {
             return result.json();
             //this.setState({value: result.json().text});
         })
-        .then((stuff) => {
-            console.log(stuff);
-            //this.setState({value: stuff.stuff});
+        .then((trips) => {
+            console.log(trips);
+            this.displayToContentBlock(trips)
         });
   	}
 
+    displayToContentBlock(trips) {
+        let content = ''
+        for (let i in trips.products) {
+            content+= '<div>';
+            content+=`<h2>An amazing trip to ${trips.products[i].hotel.location.country.name} for only ${trips.products[i].price.amountTotal}€ at the incredible ${trips.products[i].hotel.name} hotel!</h2>`;
+            content+=`<div><h3>Trip Details:</h3></div><div><b>Inbound Flight Details</b></div>`;
+            content+=`<div>${trips.products[i].flight.inbound.arrivalAirport.code} to ${trips.products[i].flight.inbound.departureAirport.code} on ${moment(trips.products[i].flight.inbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.inbound.departureDateTime).format('HH:mm')}</div>`;
+            content+=`<div><b>Outbound Flight Details</b></div>`;
+            content+=`<div>${trips.products[i].flight.outbound.arrivalAirport.code} to ${trips.products[i].flight.outbound.departureAirport.code} on ${moment(trips.products[i].flight.outbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.outbound.departureDateTime).format('HH:mm')}</div>`;
+            content+='</div>';
+        }
+        console.log(content);
+    }
+    
     render() {
         //let start = this.state.startDate.format('YYYY-MM-DD');
         return (
