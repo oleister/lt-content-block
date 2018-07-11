@@ -120,6 +120,7 @@ class Content extends Component {
             content+='</div>';
         }
         console.log(content);
+        this.sdk.setContent(content);
     }
     
     render() {
