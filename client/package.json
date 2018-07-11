@@ -4,7 +4,9 @@
   "private": true,
   "dependencies": {
     "blocksdk": "^1.0.1",
+    "moment": "^2.22.2",
     "react": "^16.4.1",
+    "react-datepicker": "^1.5.0",
     "react-dom": "^16.4.1",
     "react-scripts": "1.1.4"
   },

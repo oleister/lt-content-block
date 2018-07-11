@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Picker from './components/picker.js';
+import Content from './components/Content.js';
 
 class App extends Component {
   render() {
     return (
       <div>
-        <Picker></Picker>
+        <Content></Content>
       </div>
     );
   }
