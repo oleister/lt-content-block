@@ -159,10 +159,10 @@ class Content extends Component {
         if (this.state.minPriceVariable) {
             minPriceBlock = <div>
             <p>Enter the minimm price variable name</p>
-                <input type="text" value={this.state.minPriceAMP} onChange={this.handleMinPriceChange} /></div>;
+                <input type="text" value={this.state.minPriceAMP} onChange={this.handleMinPriceAMPChange} /></div>;
             maxPriceBlock = <div>
             <p>Enter the max price variable name</p>
-                <input type="text" value={this.state.maxPriceAMP} onChange={this.handleMaxPriceChange} /></div>;
+                <input type="text" value={this.state.maxPriceAMP} onChange={this.handleMaxPriceAMPChange} /></div>;
         }
         return (
             <div className="padding">
