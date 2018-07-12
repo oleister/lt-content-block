@@ -24,12 +24,18 @@ class Content extends Component {
             numResults: 3,
             startDate: moment(),
             endDate: moment().add(30, 'd'),
+            minPriceVariable: false,
+            minPriceAMP: '%%minPrice%%',
+            maxPriceAMP: '%%maxPrice%%',
         }
         this.handleMinPriceChange = this.handleMinPriceChange.bind(this);
         this.handleMaxPriceChange = this.handleMaxPriceChange.bind(this);
+        this.handleMinPriceAMPChange = this.handleMinPriceAMPChange.bind(this);
+        this.handleMaxPriceAMPChange = this.handleMaxPriceAMPChange.bind(this);
         this.handleNumberOfResultsChange = this.handleNumberOfResultsChange.bind(this);
         this.handleStartDateChange = this.handleStartDateChange.bind(this);
         this.handleEndDateChange = this.handleEndDateChange.bind(this);
+        this.handleMinPriceVariableChange = this.handleMinPriceVariableChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -39,25 +45,6 @@ class Content extends Component {
 	}
 
     componentDidMount() {
-        /*fetch('/listings', {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'test': 'Hello API!'
-            })
-        })
-        .then((result) => {
-            console.log(result);
-            return result.json();
-            //this.setState({value: result.json().text});
-        })
-        .then((stuff) => {
-            console.log(stuff);
-            //this.setState({value: stuff.stuff});
-        });*/
     }
 
     handleMinPriceChange(event) {
@@ -78,6 +65,18 @@ class Content extends Component {
 
     handleEndDateChange(date) {
         this.setState({endDate: date});
+    }
+
+    handleMinPriceVariableChange(event) {
+        this.setState({minPriceVariable: event.target.checked});
+    }
+
+    handleMinPriceAMPChange(event) {
+        this.setState({minPriceAMP: event.target.value});
+    }
+
+    handleMaxPriceAMPChange(event) {
+        this.setState({maxPriceAMP: event.target.value});
     }
 
     handleSubmit(event) {
@@ -110,30 +109,51 @@ class Content extends Component {
 
     displayToContentBlock(trips) {
         let content = ''
-        for (let i in trips.products) {
-            content+= '<div>';
-            content+=`<h2>An amazing trip to ${trips.products[i].hotel.location.country.name} for only ${trips.products[i].price.amountTotal}€ at the incredible ${trips.products[i].hotel.name} hotel!</h2>`;
-            content+=`<div><h3>Trip Details:</h3></div><div><b>Inbound Flight Details</b></div>`;
-            content+=`<div>${trips.products[i].flight.inbound.arrivalAirport.code} to ${trips.products[i].flight.inbound.departureAirport.code} on ${moment(trips.products[i].flight.inbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.inbound.departureDateTime).format('HH:mm')}</div>`;
-            content+=`<div><b>Outbound Flight Details</b></div>`;
-            content+=`<div>${trips.products[i].flight.outbound.arrivalAirport.code} to ${trips.products[i].flight.outbound.departureAirport.code} on ${moment(trips.products[i].flight.outbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.outbound.departureDateTime).format('HH:mm')}</div>`;
-            content+='</div>';
+        if (this.state.minPriceVariable) {
+            for (let i in trips.products) {
+                content+= '<div>';
+                content+=`<h2>An amazing trip to ${trips.products[i].hotel.location.country.name} for only ${trips.products[i].price.amountTotal}€ at the incredible ${trips.products[i].hotel.name} hotel!</h2>`;
+                content+=`<div><h3>Trip Details:</h3></div><div><b>Inbound Flight Details</b></div>`;
+                content+=`<div>${trips.products[i].flight.inbound.arrivalAirport.code} to ${trips.products[i].flight.inbound.departureAirport.code} on ${moment(trips.products[i].flight.inbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.inbound.departureDateTime).format('HH:mm')}</div>`;
+                content+=`<div><b>Outbound Flight Details</b></div>`;
+                content+=`<div>${trips.products[i].flight.outbound.arrivalAirport.code} to ${trips.products[i].flight.outbound.departureAirport.code} on ${moment(trips.products[i].flight.outbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.outbound.departureDateTime).format('HH:mm')}</div>`;
+                content+='</div>';
+            }
+            console.log(content);
+            this.sdk.setContent(content);
         }
-        console.log(content);
-        this.sdk.setContent(content);
+        else {
+            //lots of ampscript now
+            
+        }
     }
     
     render() {
-        //let start = this.state.startDate.format('YYYY-MM-DD');
+        let minPriceBlock = <div>
+        <p>Enter the minimum price</p>
+            <input type="text" value={this.state.minPrice} onChange={this.handleMinPriceChange} />
+            </div>;
+        let maxPriceBlock = <div>
+        <p>Enter the maximum price</p>
+            <input type="text" value={this.state.maxPrice} onChange={this.handleMaxPriceChange} />
+            </div>;
+        if (this.state.minPriceVariable) {
+            minPriceBlock = <div>
+            <p>Enter the minimm price variable name</p>
+                <input type="text" value={this.state.minPriceAMP} onChange={this.handleMinPriceChange} /></div>;
+            maxPriceBlock = <div>
+            <p>Enter the max price variable name</p>
+                <input type="text" value={this.state.maxPriceAMP} onChange={this.handleMaxPriceChange} /></div>;
+        }
         return (
             <div className="padding">
+                <p>Use a subscriber attributes for pricing</p>
+                <input type="checkbox" value={this.state.minPriceVariable} onChange={this.handleMinPriceVariableChange} />
                 <div>
-                    <p>Enter the minimum price</p>
-					<input type="text" value={this.state.minPrice} onChange={this.handleMinPriceChange} />
+                    {minPriceBlock}
 				</div>
                 <div>
-                    <p>Enter the maximum price</p>
-					<input type="text" value={this.state.maxPrice} onChange={this.handleMaxPriceChange} />
+                    {maxPriceBlock}
 				</div>
                 <div>
                     <p>How many results would you like</p>

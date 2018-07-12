@@ -55,7 +55,7 @@ app.get('/test', (req, res) => {
 				"size": 6
 			}
 		},
-		json: true // Automatically stringifies the body to JSON
+		json: true 
 	};
 	
 	request(options)
@@ -64,10 +64,7 @@ app.get('/test', (req, res) => {
 			res.json(parsedBody);
 		})
 		.catch(function (err) {
-			// POST failed...
 		});
-
-	//res.json({stuff:'Hello World'});
 });
 
 app.post('/listings', (req, res) => {
@@ -110,7 +107,7 @@ app.post('/listings', (req, res) => {
 				"size": resultCount
 			}
 		},
-		json: true // Automatically stringifies the body to JSON
+		json: true 
 	};
 	
 	request(options)
@@ -119,10 +116,8 @@ app.post('/listings', (req, res) => {
 			res.json(parsedBody);
 		})
 		.catch(function (err) {
-			// POST failed...
 		});
 
-	//res.json({stuff:'Hello World'});
 });
 
 const port = process.env.PORT || 5000;
