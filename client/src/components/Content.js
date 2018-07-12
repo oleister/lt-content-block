@@ -147,8 +147,8 @@ class Content extends Component {
                     "min": ${this.state.minPriceAMP},
                     "max": ${this.state.maxPriceAMP},
                     "resultCount": ${this.state.numResults},
-                    "startDate": ${this.state.startDate.format('YYYY-MM-DD')},
-                    "endDate": ${this.state.endDate.format('YYYY-MM-DD')}
+                    "startDate": "${this.state.startDate.format('YYYY-MM-DD')}",
+                    "endDate": "${this.state.endDate.format('YYYY-MM-DD')}"
                 }'
                 HTTPPost2('https://psdemo-ltur-content-block.herokuapp.com/personalisedFeed', 'application/json', @body, true, @output, @responseheader)
                 ]%%
