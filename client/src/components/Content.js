@@ -81,35 +81,39 @@ class Content extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-
-        fetch('/listings', {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'min': this.state.minPrice,
-                'max': this.state.maxPrice,
-                'resultCount': this.state.numResults,
-                'startDate': this.state.startDate.format('YYYY-MM-DD'),
-                'endDate': this.state.endDate.format('YYYY-MM-DD')
+        if (this.state.minPriceVariable) {
+            this.displayToContentBlock('');
+        }
+        else {
+            fetch('/listings', {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json, text/plain',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'min': this.state.minPrice,
+                    'max': this.state.maxPrice,
+                    'resultCount': this.state.numResults,
+                    'startDate': this.state.startDate.format('YYYY-MM-DD'),
+                    'endDate': this.state.endDate.format('YYYY-MM-DD')
+                })
             })
-        })
-        .then((result) => {
-            console.log(result);
-            return result.json();
-            //this.setState({value: result.json().text});
-        })
-        .then((trips) => {
-            console.log(trips);
-            this.displayToContentBlock(trips)
-        });
+            .then((result) => {
+                console.log(result);
+                return result.json();
+                //this.setState({value: result.json().text});
+            })
+            .then((trips) => {
+                console.log(trips);
+                this.displayToContentBlock(trips)
+            });
+        }
   	}
 
     displayToContentBlock(trips) {
         let content = ''
-        if (this.state.minPriceVariable) {
+        if (!this.state.minPriceVariable) {
             for (let i in trips.products) {
                 content+= `<div>
                     <h2 style="color:#808080;font-family:arial,helvetica,sans-serif;font-size:22px;font-style:normal;font-weight:bold;line-height:1;">
@@ -184,7 +188,7 @@ class Content extends Component {
                 </div>
                 <form onSubmit={this.handleSubmit}>
 					<div>
-						<input type="submit" value="Search"/>
+						<input type="submit" value="Submit"/>
 					</div>
 				</form>
             </div>
