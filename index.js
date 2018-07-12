@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const request = require('request-promise');
 const bp = require('body-parser');
+const moment = require('moment');
 
 const app = express();
 app.use(bp.urlencoded({ extended: false}));
@@ -120,6 +121,7 @@ app.post('/listings', (req, res) => {
 });
 
 app.post('/personalisedFeed', (req, res) => {
+	console.log(req.body);
 	let min = req.body.min;
 	let max = req.body.max;
 	let resultCount = req.body.resultCount;
@@ -163,19 +165,13 @@ app.post('/personalisedFeed', (req, res) => {
 	
 	request(options)
 		.then(function (trips) {
-			console.log(trips);
+			console.log('returned some data');
 			let content = '';
 			for (let i in trips.products) {
-				content+= `<div>
-						<h2 style="color:#808080;font-family:arial,helvetica,sans-serif;font-size:22px;font-style:normal;font-weight:bold;line-height:1;">
-						${trips.products[i].hotel.location.country.name} nur&nbsp;&nbsp;<b><span style="color:#800000;">${trips.products[i].price.amountTotal} &euro; </span></b></h2><h3 style="color:#808080;font-family:arial,helvetica,sans-serif;font-size:20px;font-style:normal;font-weight:bold;line-height:1;">
-						Ihr Hotel in ${trips.products[i].hotel.location.city.name}&nbsp;ist&nbsp;${trips.products[i].hotel.name} der Kategorie:&nbsp;${trips.products[i].hotel.category}&nbsp;</h3><b><span style="font-size:16px;">Reisedaten für &nbsp;${trips.products[i].travelPeriod.duration} Tage:</span></b><div>
-						<span style="font-size:13px;"><b>Abflug:</b></span></div><div>
-						<span style="font-size:13px;">${trips.products[i].flight.inbound.arrivalAirport.name} to ${trips.products[i].flight.inbound.departureAirport.name} on ${moment(trips.products[i].flight.inbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.inbound.departureDateTime).format('HH:mm')}</span></div><div>
-						<span style="font-size:13px;"><b>R&uuml;ckflug:</b></span></div><div>
-						<span style="font-size:13px;">${trips.products[i].flight.outbound.arrivalAirport.name} to ${trips.products[i].flight.outbound.departureAirport.name} on ${moment(trips.products[i].flight.outbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.outbound.departureDateTime).format('HH:mm')}</span></div>
-					</div>`;
+				console.log(trips.products[i]);
+				content+= `<div><h2 style="color:#808080;font-family:arial,helvetica,sans-serif;font-size:22px;font-style:normal;font-weight:bold;line-height:1;">${trips.products[i].hotel.location.country.name} nur&nbsp;&nbsp;<b><span style="color:#800000;">${trips.products[i].price.amountTotal} &euro; </span></b></h2><h3 style="color:#808080;font-family:arial,helvetica,sans-serif;font-size:20px;font-style:normal;font-weight:bold;line-height:1;">Ihr Hotel in ${trips.products[i].hotel.location.city.name}&nbsp;ist&nbsp;${trips.products[i].hotel.name} der Kategorie:&nbsp;${trips.products[i].hotel.category}&nbsp;</h3><b><span style="font-size:16px;">Reisedaten für &nbsp;${trips.products[i].travelPeriod.duration} Tage:</span></b><div><span style="font-size:13px;"><b>Abflug:</b></span></div><div><span style="font-size:13px;">${trips.products[i].flight.inbound.arrivalAirport.name} to ${trips.products[i].flight.inbound.departureAirport.name} on ${moment(trips.products[i].flight.inbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.inbound.departureDateTime).format('HH:mm')}</span></div><div><span style="font-size:13px;"><b>R&uuml;ckflug:</b></span></div><div><span style="font-size:13px;">${trips.products[i].flight.outbound.arrivalAirport.name} to ${trips.products[i].flight.outbound.departureAirport.name} on ${moment(trips.products[i].flight.outbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.outbound.departureDateTime).format('HH:mm')}</span></div></div>`;
 			}
+			console.log(content);
 			res.send(content);
 		})
 		.catch(function (err) {
