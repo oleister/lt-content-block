@@ -115,7 +115,7 @@ class Content extends Component {
         let content = ''
         if (!this.state.minPriceVariable) {
             for (let i in trips.products) {
-                content+= '<table align="left" border="0" cellpadding="8" cellspacing="0" style="width:100%;">
+                content+= `<table align="left" border="0" cellpadding="8" cellspacing="0" style="width:100%;">
    				<tr>
    					<td style="background-color: rgb(203, 7, 102);"><span style="font-size:16px;"><span style="font-family:arial,helvetica,sans-serif;"><span style="color:#FFFFFF;"><b>${trips.products[i].hotel.location.country.name} nur ${trips.products[i].price.amountTotal} &euro;</b></span></span></span>
 					</td></tr><tr>
@@ -134,7 +134,7 @@ class Content extends Component {
    					<td style="text-align: right; height: 5px;">
    					</td>
 		    		</tr>
-			</table>';
+			</table>`;
             }
             console.log(content);
             this.sdk.setContent(content);
