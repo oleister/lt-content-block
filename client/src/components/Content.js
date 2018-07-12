@@ -25,8 +25,8 @@ class Content extends Component {
             startDate: moment(),
             endDate: moment().add(30, 'd'),
             minPriceVariable: false,
-            minPriceAMP: '%%minPrice%%',
-            maxPriceAMP: '%%maxPrice%%',
+            minPriceAMP: 'minPrice',
+            maxPriceAMP: 'maxPrice',
         }
         this.handleMinPriceChange = this.handleMinPriceChange.bind(this);
         this.handleMaxPriceChange = this.handleMaxPriceChange.bind(this);
@@ -111,22 +111,35 @@ class Content extends Component {
         let content = ''
         if (this.state.minPriceVariable) {
             for (let i in trips.products) {
-                content+= '<div>
- 			<h2 style="color:#808080;font-family:arial,helvetica,sans-serif;font-size:22px;font-style:normal;font-weight:bold;line-height:1;">
-  			${trips.products[i].hotel.location.country.name} nur&nbsp;&nbsp;<b><span style="color:#800000;">${trips.products[i].price.amountTotal} &euro; </span></b></h2><h3 style="color:#808080;font-family:arial,helvetica,sans-serif;font-size:20px;font-style:normal;font-weight:bold;line-height:1;">
-  			Ihr Hotel in ${trips.products[i].hotel.city.name}&nbsp;ist&nbsp;${trips.products[i].hotel.name} der Kategorie:&nbsp;${trips.products[i].hotel.category}&nbsp;</h3><b><span style="font-size:16px;">Reisedaten für &nbsp;${trips.products[i].travelPeriod.duration} Tage:</span></b><div>
-  			<span style="font-size:13px;"><b>Abflug:</b></span></div><div>
-  			<span style="font-size:13px;">${trips.products[i].flight.inbound.arrivalAirport.name} to ${trips.products[i].flight.inbound.departureAirport.name} on ${moment(trips.products[i].flight.inbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.inbound.departureDateTime).format('HH:mm')}</span></div><div>
-  			<span style="font-size:13px;"><b>R&uuml;ckflug:</b></span></div><div>
- 			<span style="font-size:13px;">${trips.products[i].flight.outbound.arrivalAirport.name} to ${trips.products[i].flight.outbound.departureAirport.name} on ${moment(trips.products[i].flight.outbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.outbound.departureDateTime).format('HH:mm')}</span></div>
- 		</div>';
+                content+= `<div>
+                    <h2 style="color:#808080;font-family:arial,helvetica,sans-serif;font-size:22px;font-style:normal;font-weight:bold;line-height:1;">
+                    ${trips.products[i].hotel.location.country.name} nur&nbsp;&nbsp;<b><span style="color:#800000;">${trips.products[i].price.amountTotal} &euro; </span></b></h2><h3 style="color:#808080;font-family:arial,helvetica,sans-serif;font-size:20px;font-style:normal;font-weight:bold;line-height:1;">
+                    Ihr Hotel in ${trips.products[i].hotel.city.name}&nbsp;ist&nbsp;${trips.products[i].hotel.name} der Kategorie:&nbsp;${trips.products[i].hotel.category}&nbsp;</h3><b><span style="font-size:16px;">Reisedaten für &nbsp;${trips.products[i].travelPeriod.duration} Tage:</span></b><div>
+                    <span style="font-size:13px;"><b>Abflug:</b></span></div><div>
+                    <span style="font-size:13px;">${trips.products[i].flight.inbound.arrivalAirport.name} to ${trips.products[i].flight.inbound.departureAirport.name} on ${moment(trips.products[i].flight.inbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.inbound.departureDateTime).format('HH:mm')}</span></div><div>
+                    <span style="font-size:13px;"><b>R&uuml;ckflug:</b></span></div><div>
+                    <span style="font-size:13px;">${trips.products[i].flight.outbound.arrivalAirport.name} to ${trips.products[i].flight.outbound.departureAirport.name} on ${moment(trips.products[i].flight.outbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.outbound.departureDateTime).format('HH:mm')}</span></div>
+                </div>`;
             }
             console.log(content);
             this.sdk.setContent(content);
         }
         else {
             //lots of ampscript now
-            
+            content+=`%%[set @minPrice=${minPriceAMP} set @maxPrice=${maxPriceAMP}
+                var @output, @responseheader
+                set @body = '{
+                    'min': ${this.state.minPriceAMP},
+                    'max': ${this.state.maxPriceAMP},
+                    'resultCount': ${this.state.numResults},
+                    'startDate': ${this.state.startDate.format('YYYY-MM-DD')},
+                    'endDate': ${this.state.endDate.format('YYYY-MM-DD')}
+                }'
+                HTTPPost2('https://psdemo-ltur-content-block.herokuapp.com/personalisedFeed', 'application/json', @body, true, @output, @responseheader)
+                ]%%
+                %%=v(@output)=%%
+                `
+            this.sdk.setContent(content);
         }
     }
     
