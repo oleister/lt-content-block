@@ -126,7 +126,7 @@ class Content extends Component {
         }
         else {
             //lots of ampscript now
-            content+=`%%[set @minPrice=${minPriceAMP} set @maxPrice=${maxPriceAMP}
+            content+=`%%[
                 var @output, @responseheader
                 set @body = '{
                     'min': ${this.state.minPriceAMP},
