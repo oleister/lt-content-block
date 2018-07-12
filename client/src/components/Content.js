@@ -111,13 +111,15 @@ class Content extends Component {
         let content = ''
         if (this.state.minPriceVariable) {
             for (let i in trips.products) {
-                content+= '<div>';
-                content+=`<h2>An amazing trip to ${trips.products[i].hotel.location.country.name} for only ${trips.products[i].price.amountTotal}€ at the incredible ${trips.products[i].hotel.name} hotel!</h2>`;
-                content+=`<div><h3>Trip Details:</h3></div><div><b>Inbound Flight Details</b></div>`;
-                content+=`<div>${trips.products[i].flight.inbound.arrivalAirport.code} to ${trips.products[i].flight.inbound.departureAirport.code} on ${moment(trips.products[i].flight.inbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.inbound.departureDateTime).format('HH:mm')}</div>`;
-                content+=`<div><b>Outbound Flight Details</b></div>`;
-                content+=`<div>${trips.products[i].flight.outbound.arrivalAirport.code} to ${trips.products[i].flight.outbound.departureAirport.code} on ${moment(trips.products[i].flight.outbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.outbound.departureDateTime).format('HH:mm')}</div>`;
-                content+='</div>';
+                content+= '<div>
+ 			<h2 style="color:#808080;font-family:arial,helvetica,sans-serif;font-size:22px;font-style:normal;font-weight:bold;line-height:1;">
+  			${trips.products[i].hotel.location.country.name} nur&nbsp;&nbsp;<b><span style="color:#800000;">${trips.products[i].price.amountTotal} &euro; </span></b></h2><h3 style="color:#808080;font-family:arial,helvetica,sans-serif;font-size:20px;font-style:normal;font-weight:bold;line-height:1;">
+  			Ihr Hotel in ${trips.products[i].hotel.city.name}&nbsp;ist&nbsp;${trips.products[i].hotel.name} der Kategorie:&nbsp;${trips.products[i].hotel.category}&nbsp;</h3><b><span style="font-size:16px;">Reisedaten für &nbsp;${trips.products[i].travelPeriod.duration} Tage:</span></b><div>
+  			<span style="font-size:13px;"><b>Abflug:</b></span></div><div>
+  			<span style="font-size:13px;">${trips.products[i].flight.inbound.arrivalAirport.name} to ${trips.products[i].flight.inbound.departureAirport.name} on ${moment(trips.products[i].flight.inbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.inbound.departureDateTime).format('HH:mm')}</span></div><div>
+  			<span style="font-size:13px;"><b>R&uuml;ckflug:</b></span></div><div>
+ 			<span style="font-size:13px;">${trips.products[i].flight.outbound.arrivalAirport.name} to ${trips.products[i].flight.outbound.departureAirport.name} on ${moment(trips.products[i].flight.outbound.departureDateTime).format('DD-MM-YY')} at ${moment(trips.products[i].flight.outbound.departureDateTime).format('HH:mm')}</span></div>
+ 		</div>';
             }
             console.log(content);
             this.sdk.setContent(content);
