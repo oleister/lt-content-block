@@ -117,9 +117,9 @@ class Content extends Component {
             for (let i in trips.products) {
                 content+= `<table align="left" border="0" cellpadding="8" cellspacing="0" style="width:100%;">
    				<tr>
-   					<td style="background-color: rgb(203, 7, 102);"><span style="font-size:16px;"><span style="font-family:arial,helvetica,sans-serif;"><span style="color:#FFFFFF;"><b>${trips.products[i].hotel.location.country.name} only ${trips.products[i].price.amountTotal} &euro;</b></span></span></span>
+   					<td style="background-color: rgb(42, 57, 107);"><span style="font-size:16px;"><span style="font-family:arial,helvetica,sans-serif;"><span style="color:#FFFFFF;"><b>${trips.products[i].hotel.location.country.name} only ${trips.products[i].price.amountTotal} &euro;</b></span></span></span>
 					</td></tr><tr>
-   					<td style="background-color: rgb(246, 140, 18);"><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size:14px;">Your hotel in ${trips.products[i].hotel.location.city.name} is ${trips.products[i].hotel.name} with category ${trips.products[i].hotel.category}&nbsp;</span></span>
+   					<td style="background-color: rgb(0, 146, 188);"><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size:14px;">Your hotel in ${trips.products[i].hotel.location.city.name} is ${trips.products[i].hotel.name} with category ${trips.products[i].hotel.category}&nbsp;</span></span>
 					</td></tr><tr>
    					<td style="background-color: rgb(221, 236, 242); height: 15px;"><b style="font-family: arial, helvetica, sans-serif; font-size: 12px;">Traveldetails for ${trips.products[i].travelPeriod.duration} days:</b>
 		    			</td></tr><tr>
